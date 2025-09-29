@@ -1,0 +1,68 @@
+{
+  "offers": {
+    "branding": {
+      "hero": {
+        "src": "https://i.postimg.cc/ZqtfzpwT/Whats-App-Image-2025-06-03-a-03-05-36-b4c40c01-683x1024.jpg",
+        "alt": "Abstract image representing branding",
+        "width": 683,
+        "height": 1024,
+        "hint": "abstract branding"
+      },
+      "cta": {
+        "src": "https://i.postimg.cc/yxG4zjQv/Whats-App-Image-2025-06-03-a-03-17-22-a14670f2-1024x850.jpg",
+        "alt": "Person sketching branding ideas in a notebook.",
+        "width": 1024,
+        "height": 850,
+        "hint": "sketching ideas"
+      }
+    },
+    "website": {
+      "hero": {
+        "src": "https://i.postimg.cc/ydJ2ycY4/Whats-App-Image-2025-06-03-a-02-44-16-106a0ce0-1024x683.jpg",
+        "alt": "Abstract image representing web design",
+        "width": 1024,
+        "height": 683,
+        "hint": "web design"
+      },
+      "cta": {
+        "src": "https://i.postimg.cc/4dKjQVNy/Whats-App-Image-2025-06-03-a-02-45-24-01708a43-1-771x1024.jpg",
+        "alt": "Designer working on a website layout on a computer.",
+        "width": 771,
+        "height": 1024,
+        "hint": "website design"
+      }
+    },
+    "mobileApp": {
+      "hero": {
+        "src": "https://i.postimg.cc/0yR5M5n9/Whats-App-Image-2025-06-03-a-02-43-36-f42f0bf0-1024x683.jpg",
+        "alt": "Abstract image representing mobile app development",
+        "width": 1024,
+        "height": 683,
+        "hint": "app development"
+      },
+      "cta": {
+        "src": "https://i.postimg.cc/6pJ626cW/Whats-App-Image-2025-06-03-a-03-21-55-2061b1f9-1024x683.jpg",
+        "alt": "Person using a mobile application on a smartphone.",
+        "width": 1024,
+        "height": 683,
+        "hint": "using smartphone"
+      }
+    },
+    "accompaniment": {
+      "hero": {
+        "src": "https://i.postimg.cc/nzDpc6m4/Whats-App-Image-2025-06-03-a-12-27-26-cbd04a09-1024x640.jpg",
+        "alt": "Abstract image representing digital content",
+        "width": 1024,
+        "height": 640,
+        "hint": "digital content"
+      },
+      "cta": {
+        "src": "https://i.postimg.cc/598fcW1h/Post-Instagram-Question-Engagement-Strategie-Marketing-Digital-Moderne-Photo-Bleu-Beige-1-819x1024.png",
+        "alt": "Social media manager planning content on a laptop.",
+        "width": 819,
+        "height": 1024,
+        "hint": "content planning"
+      }
+    }
+  }
+}
