@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const teamFeatures = [
     { title: "Expertise 360°", text: "Stratégie, design, code : nous transformons vos idées en solutions concrètes." },
@@ -39,7 +40,7 @@ export function TeamSection() {
                 <div className="relative">
                     <div className="absolute -inset-2 bg-gradient-to-br from-primary to-accent rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                      <Image 
-                        src="https://i.postimg.cc/d16ZXbz4/1516875135744-1.jpg"
+                        src="https://i.postimg.cc/vZG0Pwpd/image00042.jpg"
                         alt="Ibtissem AMSLER" 
                         width={400} 
                         height={400} 
@@ -77,7 +78,9 @@ export function TeamSection() {
                     <div className="order-2 md:order-1">
                         <h4 className="font-headline text-2xl font-bold mb-4">Femmes Entrepreneuses & Croissance Digitale</h4>
                         <p className="text-muted-foreground mb-4">Je participe au programme Femmes Entrepreneuses d’Orange, un dispositif unique qui accompagne les créatrices d’entreprises en France pour démocratiser l’entrepreneuriat féminin. Pendant 10 mois, ce programme gratuit me soutient dans le développement de mon business grâce à un accompagnement personnalisé, des mentors, et l’accès au réseau du Cercle des Femmes Entrepreneuses. Orange m’accompagne pour booster ma visibilité, renforcer mon leadership et tester mes offres avec des solutions digitales adaptées.</p>
-                        <Button variant="link" className="p-0 text-primary">En savoir plus</Button>
+                        <Button asChild variant="link" className="p-0 text-primary">
+                          <Link href="https://www.orange.com/fr/femmes-entrepreneuses" target="_blank" rel="noopener noreferrer">En savoir plus</Link>
+                        </Button>
                     </div>
                     <div className="order-1 md:order-2">
                         <Image
