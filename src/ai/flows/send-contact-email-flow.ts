@@ -18,11 +18,13 @@ const SendContactEmailInputSchema = z.object({
   need: z.string(),
   workInterest: z.string(),
   projectDescription: z.string(),
+  recaptchaToken: z.string(),
 });
 export type SendContactEmailInput = z.infer<typeof SendContactEmailInputSchema>;
 
 const SendContactEmailOutputSchema = z.object({
   success: z.boolean(),
+  message: z.string().optional(),
 });
 export type SendContactEmailOutput = z.infer<typeof SendContactEmailOutputSchema>;
 
@@ -37,6 +39,25 @@ const sendContactEmailFlow = ai.defineFlow(
     outputSchema: SendContactEmailOutputSchema,
   },
   async (input) => {
+    // Verify reCAPTCHA
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${input.recaptchaToken}`;
+
+    try {
+      const recaptchaResponse = await fetch(verificationUrl, { method: 'POST' });
+      const recaptchaData = await recaptchaResponse.json();
+
+      if (!recaptchaData.success || recaptchaData.score < 0.5) {
+        console.error('reCAPTCHA verification failed:', recaptchaData['error-codes']);
+        return { success: false, message: 'La vérification reCAPTCHA a échoué. Veuillez réessayer.' };
+      }
+
+    } catch (error) {
+        console.error('Error verifying reCAPTCHA:', error);
+        return { success: false, message: 'Erreur lors de la vérification reCAPTCHA.' };
+    }
+
+
     const from = 'contact.croissancedigitale@gmail.com';
     const to = ['najibouldali6@gmail.com', 'ouldalibtissem@gmail.com'];
     const subject = `Nouvelle demande de devis: ${input.need}`;
@@ -73,7 +94,7 @@ const sendContactEmailFlow = ai.defineFlow(
       return { success: true };
     } catch (error) {
       console.error('Failed to send email:', error);
-      return { success: false };
+      return { success: false, message: "Une erreur s'est produite lors de l'envoi du message." };
     }
   }
 );

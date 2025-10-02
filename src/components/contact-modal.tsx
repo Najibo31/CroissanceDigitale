@@ -9,11 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import Image from 'next/image';
 import { sendContactEmail } from '@/ai/flows/send-contact-email-flow';
 import { Loader2 } from 'lucide-react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const formSchema = z.object({
   phone: z.string().min(10, { message: 'Le numéro de téléphone doit être valide.' }),
@@ -21,6 +22,7 @@ const formSchema = z.object({
   need: z.string({ required_error: "Veuillez sélectionner la nature du besoin."}),
   workInterest: z.string({ required_error: 'Veuillez sélectionner un travail.' }),
   projectDescription: z.string().min(10, { message: 'La description doit contenir au moins 10 caractères.' }).max(500, { message: 'La description ne doit pas dépasser 500 caractères.' }),
+  recaptchaToken: z.string().min(1, { message: 'Veuillez compléter le reCAPTCHA.' }),
 });
 
 interface ContactModalContentProps {
@@ -61,6 +63,7 @@ type Need = keyof typeof workOptionsByNeed;
 export function ContactModalContent({ subject, need }: ContactModalContentProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,6 +73,7 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
       projectDescription: '',
       workInterest: subject || '',
       need: need || '',
+      recaptchaToken: '',
     },
   });
 
@@ -80,13 +84,15 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
       form.setValue('workInterest', subject);
     }
     if (need) {
-      form.setValue('need', need);
+      form.setValue('need', need as Need);
     }
   }, [subject, need, form]);
 
   useEffect(() => {
-    form.setValue('workInterest', '');
-  }, [selectedNeed, form]);
+    if (selectedNeed && (!subject || form.getValues('need') !== need)) {
+        form.setValue('workInterest', '');
+    }
+  }, [selectedNeed, form, subject, need]);
 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -99,13 +105,14 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
           description: 'Nous vous répondrons dans les plus brefs délais.',
         });
         form.reset();
+        recaptchaRef.current?.reset();
       } else {
-        throw new Error('Email sending failed');
+        throw new Error(result.message || 'Email sending failed');
       }
-    } catch (error) {
+    } catch (error: any) {
        toast({
         title: 'Erreur',
-        description: "Une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.",
+        description: error.message || "Une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.",
         variant: 'destructive',
       });
     } finally {
@@ -224,6 +231,23 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
                         )}
                     />
                     
+                    <FormField
+                        control={form.control}
+                        name="recaptchaToken"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                                    onChange={(token) => field.onChange(token)}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+
                     <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         {isSubmitting ? 'Envoi en cours...' : 'Demander un devis'}
