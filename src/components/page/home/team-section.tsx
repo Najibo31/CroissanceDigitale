@@ -44,7 +44,7 @@ export function TeamSection() {
                         alt="Ibtissem AMSLER" 
                         width={400} 
                         height={400} 
-                        className="relative w-[350px] h-[350px] md:w-[400px] md:h-[400px] object-cover rounded-full shadow-2xl"
+                        className="relative w-[350px] h-[350px] md:w-[400px] md:h-[400px] object-cover object-top rounded-full shadow-2xl"
                         data-ai-hint="professional woman"
                     />
                 </div>
