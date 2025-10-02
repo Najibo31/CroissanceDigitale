@@ -9,16 +9,18 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import Image from 'next/image';
+import { sendContactEmail } from '@/ai/flows/send-contact-email-flow';
+import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
   phone: z.string().min(10, { message: 'Le numéro de téléphone doit être valide.' }),
   email: z.string().email({ message: 'Adresse email invalide.' }),
   need: z.string({ required_error: "Veuillez sélectionner la nature du besoin."}),
-  projectDescription: z.string().min(10, { message: 'La description doit contenir au moins 10 caractères.' }).max(500, { message: 'La description ne doit pas dépasser 500 caractères.' }),
   workInterest: z.string({ required_error: 'Veuillez sélectionner un travail.' }),
+  projectDescription: z.string().min(10, { message: 'La description doit contenir au moins 10 caractères.' }).max(500, { message: 'La description ne doit pas dépasser 500 caractères.' }),
 });
 
 interface ContactModalContentProps {
@@ -26,8 +28,39 @@ interface ContactModalContentProps {
   need?: string | null;
 }
 
+const workOptionsByNeed = {
+  "Image de Marque": [
+    { value: "Choix du pack: 'Identité Express'", label: "Offre Starter ‘Identité Express’" },
+    { value: "Choix du pack: 'Image Complète'", label: "Offre Signature ‘Image Complète’" },
+    { value: "Choix du pack: 'Branding Stratégique'", label: "Offre Premium ‘Branding Stratégique’" },
+  ],
+  "Site Web": [
+    { value: "Choix du pack: 'Site Starter'", label: "Offre Site Starter" },
+    { value: "Choix du pack: 'Site Signature'", label: "Offre Impact Site Signature" },
+    { value: "Choix du pack: 'Site Premium Évolutif'", label: "Offre Site Premium Évolutif" },
+    { value: "Choix du pack: 'Site E-commerce'", label: "Offre Site E-commerce" },
+  ],
+  "Application Mobile": [
+    { value: "Choix du pack: 'Application Mobile'", label: "Offre Présence Mobile" },
+    { value: "Choix du pack: 'Application Pro'", label: "Offre d’Application Pro" },
+    { value: "Choix du pack: 'Application Métier'", label: "Offre d’Application Métier" },
+    { value: "Demande de devis Maintenance", label: "Option Maintenance / Évolutions" },
+  ],
+  "Accompagnement": [
+    { value: "Choix du pack: 'Contenu Digital'", label: "Pack Starter l’Essentiel des Réseaux" },
+    { value: "Choix du pack: 'Visibilité Pro'", label: "Pack Ambition la Visibilité Pro" },
+    { value: "Choix du pack: 'Influence & Impact'", label: "Pack Premium ‘Influence & Impact’" },
+  ],
+  "Autre": [
+    { value: "Autre", label: "Autre" }
+  ],
+};
+
+type Need = keyof typeof workOptionsByNeed;
+
 export function ContactModalContent({ subject, need }: ContactModalContentProps) {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,6 +73,8 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
     },
   });
 
+  const selectedNeed = form.watch('need') as Need | undefined;
+
   useEffect(() => {
     if (subject) {
       form.setValue('workInterest', subject);
@@ -49,15 +84,33 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
     }
   }, [subject, need, form]);
 
-  const projectDescription = form.watch('projectDescription');
+  useEffect(() => {
+    form.setValue('workInterest', '');
+  }, [selectedNeed, form]);
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: 'Message envoyé !',
-      description: 'Nous vous répondrons dans les plus brefs délais.',
-    });
-    form.reset();
+    setIsSubmitting(true);
+    try {
+      const result = await sendContactEmail(values);
+      if (result.success) {
+        toast({
+          title: 'Message envoyé !',
+          description: 'Nous vous répondrons dans les plus brefs délais.',
+        });
+        form.reset();
+      } else {
+        throw new Error('Email sending failed');
+      }
+    } catch (error) {
+       toast({
+        title: 'Erreur',
+        description: "Une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.",
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -68,7 +121,7 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
                 alt="Logo background"
                 width={300}
                 height={300}
-                className="opacity-40"
+                className="opacity-5"
             />
         </div>
         <div className='relative z-10'>
@@ -140,27 +193,16 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Travail qui vous intéresse *</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value} defaultValue={subject || ""}>
+                          <Select onValueChange={field.onChange} value={field.value} disabled={!selectedNeed}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="— Sélectionnez un travail —" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                                <SelectItem value="Choix du pack: 'Identité Express'">Offre Starter ‘Identité Express’</SelectItem>
-                                <SelectItem value="Choix du pack: 'Image Complète'">Offre Signature ‘Image Complète’</SelectItem>
-                                <SelectItem value="Choix du pack: 'Branding Stratégique'">Offre Premium ‘Branding Stratégique’</SelectItem>
-                                <SelectItem value="Choix du pack: 'Site Web'">Offre Site Starter</SelectItem>
-                                <SelectItem value="Choix du pack: 'Site Signature'">Offre Impact Site Signature</SelectItem>
-                                <SelectItem value="Choix du pack: 'Site Premium Évolutif'">Offre Site Premium Évolutif</SelectItem>
-                                <SelectItem value="Choix du pack: 'Site E-commerce'">Offre Site E-commerce</SelectItem>
-                                <SelectItem value="Choix du pack: 'Application Mobile'">Offre Présence Mobile</SelectItem>
-                                <SelectItem value="Choix du pack: 'Application Pro'">Offre d’Application Pro</SelectItem>
-                                <SelectItem value="Choix du pack: 'Application Métier'">Offre d’Application Métier</SelectItem>
-                                <SelectItem value="Demande de devis Maintenance">Option Maintenance / Évolutions</SelectItem>
-                                <SelectItem value="Choix du pack: 'Contenu Digital'">Pack Starter l’Essentiel des Réseaux</SelectItem>
-                                <SelectItem value="Choix du pack: 'Visibilité Pro'">Pack Ambition la Visibilité Pro</SelectItem>
-                                <SelectItem value="Choix du pack: 'Influence & Impact'">Pack Premium ‘Influence & Impact’</SelectItem>
+                                {selectedNeed && workOptionsByNeed[selectedNeed] && workOptionsByNeed[selectedNeed].map(option => (
+                                  <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                                ))}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -182,8 +224,9 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
                         )}
                     />
                     
-                    <Button type="submit" size="lg" className="w-full">
-                        Demander un devis
+                    <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isSubmitting ? 'Envoi en cours...' : 'Demander un devis'}
                     </Button>
                 </form>
             </Form>
