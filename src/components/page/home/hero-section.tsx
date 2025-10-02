@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import { ContactModalTrigger } from '@/components/contact-modal-trigger';
 
 export function HeroSection() {
     const containerVariants = {
@@ -63,11 +64,11 @@ export function HeroSection() {
                                     Découvrez nos offres <ArrowRight className="ml-2 h-5 w-5" />
                                 </Link>
                             </Button>
-                            <Button asChild size="lg" variant="outline" className="text-lg bg-transparent text-white border-white hover:bg-primary hover:text-primary-foreground hover:border-primary">
-                                <Link href="/contactez-nous">
+                            <ContactModalTrigger asChild>
+                                <Button size="lg" variant="outline" className="text-lg bg-transparent text-white border-white hover:bg-primary hover:text-primary-foreground hover:border-primary">
                                     Parlez-nous de vos besoins
-                                </Link>
-                            </Button>
+                                </Button>
+                            </ContactModalTrigger>
                         </motion.div>
                     </motion.div>
                     <motion.div 

@@ -1,10 +1,12 @@
 
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Check, Star, Wrench, MessageSquareQuote } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import placeholderImages from "@/app/lib/placeholder-images.json";
+import { ContactModalTrigger } from "@/components/contact-modal-trigger";
 
 const packs = [
   {
@@ -110,9 +112,13 @@ export default function ApplicationMobilePage() {
                 </ul>
               </CardContent>
               <CardFooter className="mt-auto">
-                <Button asChild className="w-full">
-                  <Link href={`/contactez-nous?subject=${encodeURIComponent(pack.link)}&need=${encodeURIComponent(need)}`}>Choisir ce pack</Link>
-                </Button>
+                <ContactModalTrigger
+                  subject={pack.link}
+                  need={need}
+                  className="w-full"
+                >
+                  Choisir ce pack
+                </ContactModalTrigger>
               </CardFooter>
             </Card>
           ))}
@@ -124,11 +130,13 @@ export default function ApplicationMobilePage() {
                 <h3 className="font-headline text-2xl font-bold mb-2">Option Maintenance / Évolutions</h3>
                 <p className="text-muted-foreground mb-4">Assurez la pérennité et l’évolution de votre application avec notre service de maintenance.</p>
                 <p className="text-lg font-semibold text-foreground mb-4">Disponible sur devis ou en forfait mensuel à partir de 300 €/mois.</p>
-                <Button asChild variant="outline">
-                    <Link href={`/contactez-nous?subject=Demande%20de%20devis%20Maintenance&need=${encodeURIComponent(need)}`}>
-                        <MessageSquareQuote className="mr-2 h-4 w-4" /> Demander un devis
-                    </Link>
-                </Button>
+                <ContactModalTrigger
+                    subject="Demande de devis Maintenance"
+                    need={need}
+                    variant="outline"
+                  >
+                    <MessageSquareQuote className="mr-2 h-4 w-4" /> Demander un devis
+                </ContactModalTrigger>
             </CardContent>
         </Card>
 
@@ -146,9 +154,12 @@ export default function ApplicationMobilePage() {
             <div className="text-center md:text-left max-w-2xl mx-auto">
               <h3 className="text-3xl font-bold font-headline mb-4">Prêt à lancer votre application mobile ?</h3>
               <p className="text-muted-foreground mb-8">Contactez-nous dès aujourd’hui pour discuter de vos besoins et choisir le pack qui vous correspond.</p>
-              <Button asChild size="lg">
-                  <Link href={`/contactez-nous?need=${encodeURIComponent(need)}`}>Remplissez ce formulaire</Link>
-              </Button>
+              <ContactModalTrigger
+                need={need}
+                size="lg"
+              >
+                  Remplissez ce formulaire
+              </ContactModalTrigger>
             </div>
         </div>
       </div>

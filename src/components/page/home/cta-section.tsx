@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { ContactModalTrigger } from '@/components/contact-modal-trigger';
 
 export function CtaSection() {
   return (
@@ -10,11 +10,11 @@ export function CtaSection() {
           <p className="mt-4 text-lg md:text-xl text-primary-foreground/80">
             Envie de voir ce que nous pouvons construire ensemble ? 👉 Contactez-nous dès aujourd’hui pour une première consultation gratuite.
           </p>
-          <Button asChild size="lg" variant="secondary" className="mt-8 text-lg bg-background text-foreground hover:bg-background/90">
-            <Link href="/contactez-nous">
+          <ContactModalTrigger asChild>
+            <Button size="lg" variant="secondary" className="mt-8 text-lg bg-background text-foreground hover:bg-background/90">
               Planifiez votre consultation
-            </Link>
-          </Button>
+            </Button>
+          </ContactModalTrigger>
         </div>
       </div>
     </section>

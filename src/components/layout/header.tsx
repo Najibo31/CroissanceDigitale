@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Image from 'next/image';
+import { ContactModalTrigger } from '../contact-modal-trigger';
 
 const navLinks = [
   { href: '/#accueil', label: 'Accueil' },
@@ -15,7 +16,6 @@ const navLinks = [
   { href: '/#collaboration', label: 'Collaboration' },
   { href: '/#services', label: 'Nos Services' },
   { href: '/#avis', label: 'Avis' },
-  { href: '/contactez-nous', label: 'Contactez-nous' },
 ];
 
 export function Header() {
@@ -60,6 +60,13 @@ export function Header() {
                 </Link>
               </Button>
             ))}
+            <ContactModalTrigger asChild>
+                <Button variant="ghost" className={cn("hover:bg-transparent relative group/link text-base", isScrolled || isMenuOpen ? 'text-foreground hover:text-primary' : 'text-white hover:text-accent')}>
+                    Contactez-nous
+                    <span className="absolute bottom-1.5 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover/link:scale-x-100 transition-transform duration-300 origin-center" />
+                </Button>
+            </ContactModalTrigger>
+
             <div className={cn(isScrolled || isMenuOpen ? '' : 'text-white')}>
               <ThemeToggle />
             </div>
@@ -89,6 +96,9 @@ export function Header() {
               <Link href={link.href}>{link.label}</Link>
             </Button>
           ))}
+           <ContactModalTrigger asChild>
+                <Button variant="ghost" className="text-lg">Contactez-nous</Button>
+            </ContactModalTrigger>
         </nav>
       </motion.div>
     </motion.header>

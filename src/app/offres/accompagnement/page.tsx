@@ -1,4 +1,5 @@
 
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6,6 +7,7 @@ import { Check, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import placeholderImages from "@/app/lib/placeholder-images.json";
+import { ContactModalTrigger } from "@/components/contact-modal-trigger";
 
 const packs = [
   {
@@ -117,9 +119,13 @@ export default function AccompagnementPage() {
                 </ul>
               </CardContent>
               <CardFooter className="mt-auto">
-                <Button asChild className="w-full">
-                  <Link href={`/contactez-nous?subject=${encodeURIComponent(pack.link)}&need=${encodeURIComponent(need)}`}>Choisir ce pack</Link>
-                </Button>
+                <ContactModalTrigger
+                  subject={pack.link}
+                  need={need}
+                  className="w-full"
+                >
+                    Choisir ce pack
+                </ContactModalTrigger>
               </CardFooter>
             </Card>
           ))}
@@ -164,9 +170,12 @@ export default function AccompagnementPage() {
             <div className="text-center md:text-left max-w-2xl mx-auto">
                 <h3 className="text-3xl font-bold font-headline mb-4">Prêt à booster votre présence digitale ?</h3>
                 <p className="text-muted-foreground mb-8">Contactez-nous dès aujourd’hui pour discuter de vos besoins et choisir le pack ou la vidéo qui vous correspond.</p>
-                <Button asChild size="lg">
-                    <Link href={`/contactez-nous?need=${encodeURIComponent(need)}`}>Remplissez ce formulaire</Link>
-                </Button>
+                <ContactModalTrigger
+                  need={need}
+                  size="lg"
+                >
+                    Remplissez ce formulaire
+                </ContactModalTrigger>
             </div>
         </div>
       </div>
