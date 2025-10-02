@@ -121,7 +121,7 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
   }
 
   return (
-    <DialogContent className="sm:max-w-[625px] overflow-hidden">
+    <DialogContent className="sm:max-w-[625px]">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <Image
                 src="https://i.postimg.cc/9FZpzK2Q/Digitale-R-cup-r.png"
