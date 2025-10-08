@@ -72,7 +72,7 @@ export function TeamSection() {
                 </div>
             </div>
         </div>
-        <div className="mt-24">
+        <div className="mt-24" id="femmes-entrepreneuses">
              <Card className="bg-card shadow-lg">
                 <CardContent className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div className="order-2 md:order-1">

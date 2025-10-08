@@ -13,8 +13,9 @@ import { ContactModalTrigger } from '../contact-modal-trigger';
 const navLinks = [
   { href: '/#accueil', label: 'Accueil' },
   { href: '/#experts', label: 'Nos Experts' },
-  { href: '/#collaboration', label: 'Collaboration' },
-  { href: '/#services', label: 'Nos Services' },
+  { href: '/#femmes-entrepreneuses', label: 'Collaboration' },
+  { href: '/#collaboration', label: 'Notre Méthode' },
+  { href: '/#offers', label: 'Offres' },
   { href: '/#avis', label: 'Avis' },
 ];
 

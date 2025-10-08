@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Instagram, Mail } from 'lucide-react';
+import { Instagram, Mail, Phone, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 
 const footerLinks = [
@@ -19,6 +19,7 @@ const legalLinks = [
 const socialLinks = [
   { href: 'https://www.instagram.com/croissancedigitale.pro?igsh=MWR3YmJ2NDZoenBrdw==', icon: Instagram, label: 'Instagram' },
   { href: 'mailto:contact.croissancedigitale@gmail.com', icon: Mail, label: 'contact.croissancedigitale@gmail.com' },
+  { href: 'https://wa.me/590690723745', icon: MessageSquare, label: 'WhatsApp' },
 ];
 
 export function Footer() {

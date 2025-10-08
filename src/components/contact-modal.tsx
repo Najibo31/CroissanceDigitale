@@ -250,7 +250,7 @@ export function ContactModalContent({ subject, need }: ContactModalContentProps)
 
                     <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {isSubmitting ? 'Envoi en cours...' : 'Demander un devis'}
+                        {isSubmitting ? 'Envoi en cours...' : 'Être rappelé par nos professionnels'}
                     </Button>
                 </form>
             </Form>
