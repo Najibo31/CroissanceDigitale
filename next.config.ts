@@ -30,14 +30,6 @@ const nextConfig: NextConfig = {
       }
     ],
   },
-  webpack: (config) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      '@opentelemetry/exporter-jaeger': false,
-      '@genkit-ai/firebase': false,
-    };
-    return config;
-  },
 };
 
 export default nextConfig;
