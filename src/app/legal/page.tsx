@@ -7,15 +7,15 @@ export default function LegalPage() {
           <section id="mentions-legales" className="mb-16 scroll-mt-24">
             <h1 className="text-4xl md:text-5xl font-bold font-headline mb-8">Mentions Légales</h1>
             <div className="space-y-4">
-              <p><strong>Dernière mise à jour :</strong> 05/06/2025</p>
+              <p><strong>Dernière mise à jour :</strong> 27/10/2026</p>
               
               <div>
                   <h2 className="text-2xl font-headline font-semibold">1. Éditeur du site</h2>
                   <p>Le site est édité par :</p>
                   <ul className="list-disc pl-6">
                       <li>Croissance Digitale</li>
-                      <li>SaS</li>
-                      <li>SIRET : [101 774 503 00011]</li>
+                      <li>SAS</li>
+                      <li>SIRET : 101 774 503 00011</li>
                       <li>Adresse : le Gosier, Guadeloupe</li>
                       <li>Email : contact@croissancedigitale.pro</li>
                       <li>Responsable de publication : Amsler Ibtissem</li>
