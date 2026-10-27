@@ -14,8 +14,8 @@ export default function LegalPage() {
                   <p>Le site est édité par :</p>
                   <ul className="list-disc pl-6">
                       <li>Croissance Digitale</li>
-                      <li>Auto-entreprise</li>
-                      <li>SIRET : [à compléter]</li>
+                      <li>SaS</li>
+                      <li>SIRET : [101 774 503 00011]</li>
                       <li>Adresse : le Gosier, Guadeloupe</li>
                       <li>Email : contact@croissancedigitale.pro</li>
                       <li>Responsable de publication : Amsler Ibtissem</li>
